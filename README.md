@@ -1,3 +1,9 @@
+# Beege's Pass at the LLM Engineer's Handbook
+
+Gonna try to do this on the cheap. AWS? Nah, OpenStack. GPT? Nah, OpenLLaMA. Probably opening myself up to a world of hurt, considering I have exactly one "server," which is an 8 year-old laptop. Squadala! We're off!
+
+<hr>
+
 <div align="center">
   <h1>👷 LLM Engineer's Handbook</h1>
   <p class="tagline">Official repository of the <a href="https://www.amazon.com/LLM-Engineers-Handbook-engineering-production/dp/1836200072/">LLM Engineer's Handbook</a> by <a href="https://github.com/iusztinpaul">Paul Iusztin</a> and <a href="https://github.com/mlabonne">Maxime Labonne</a></p>
