@@ -1,5 +1,7 @@
 # Beege's Pass at the LLM Engineer's Handbook
 
+**Current status: <u>Just starting</u>**
+
 Gonna try to do this on the cheap. AWS? Nah, OpenStack. GPT? Nah, OpenLLaMA. Probably opening myself up to a world of hurt, considering I have exactly one "server," which is an 8 year-old laptop. Squadala! We're off!
 
 Here are changes I'll make for the tooling, mostly for preference:
