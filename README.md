@@ -2,11 +2,25 @@
 
 Gonna try to do this on the cheap. AWS? Nah, OpenStack. GPT? Nah, OpenLLaMA. Probably opening myself up to a world of hurt, considering I have exactly one "server," which is an 8 year-old laptop. Squadala! We're off!
 
+Here are changes I'll make for the tooling, mostly for preference:
+
+| Book Tool | My Tool | Reason |
+|-----------|---------|---------|
+| pyenv | [uv](https://docs.astral.sh/uv/) | Fewer tools |
+| Poetry | [uv](https://docs.astral.sh/uv/) | Faster |
+| AWS CLI | OpenStack CLI and/or Terraform | Cash moneys |
+
+I'm likely not going to implement **everything** in the book, as there's a more specific use case I want to fulfill. Just roll with it.
+
+I'll also probably reorganize things a great deal, as I have a specific way I like to do things. For any potential employers, I'm aware that my personal preference is less important than a team's preference. I'd voice my opinion, but I would not force it on others. I wouldn't be the only one working, so such a decision should be made by the team.
+
+I will attempt to use Claude Code to help me with this, though my experience with it is limited. I did attempt to do some kind of agentic development for my Warhammer 40k character sheet project, but I wasn't happy with the results. I'll come back to that once the technology has progressed a little more.
+
 <hr>
 
 <div align="center">
   <h1>👷 LLM Engineer's Handbook</h1>
-  <p class="tagline">Official repository of the <a href="https://www.amazon.com/LLM-Engineers-Handbook-engineering-production/dp/1836200072/">LLM Engineer's Handbook</a> by <a href="https://github.com/iusztinpaul">Paul Iusztin</a> and <a href="https://github.com/mlabonne">Maxime Labonne</a></p>
+  <p class="tagline">Derived from <a href="https://www.amazon.com/LLM-Engineers-Handbook-engineering-production/dp/1836200072/">LLM Engineer's Handbook</a> by <a href="https://github.com/iusztinpaul">Paul Iusztin</a> and <a href="https://github.com/mlabonne">Maxime Labonne</a></p>
 </div>
 </br>
 
