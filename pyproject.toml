@@ -1,5 +1,5 @@
 [project]
-name = "llm-engineers-handbook"
+name = "llm_engineering"
 version = "0.1.0"
 description = ""
 authors = [
@@ -12,7 +12,7 @@ license = "MIT"
 dependencies = [
     "zenml[server]==0.85.0",
     "pymongo>=4.15.1,<5",
-    "click>=8.3.0,<9",
+    "click>=8.2.1,<9",
     "loguru>=0.7.3,<0.8",
     "rich>=14.1.0,<15",
     "numpy>=2.3.3,<3",
@@ -33,7 +33,7 @@ dependencies = [
     "tiktoken>=0.11.0,<0.12",
     "fake-useragent>=2.2.0,<3",
     "langchain-community>=0.3.30,<0.4",
-    "fastapi>=0.117.1,<=0.130",
+    "fastapi>=0.115.8,<=0.130",
     "uvicorn>=0.37.0,<0.38",
     "opik>=1.8.57,<2",
 ]
@@ -45,7 +45,7 @@ dev = [
     "pytest>=8.4.2,<9",
 ]
 openstack = [
-    "s3fs>2025.9.0",
+    "s3fs>=2025.9.0",
     "kubernetes>=33.1.0,<34",
     "openstack-config>=1.0.2,<2",
 ]
