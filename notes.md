@@ -38,3 +38,40 @@ Decent data architecture so far. I probably would have done it the same.
 But... Maybe it's because I've been out of the data game for a minute or because everyone does things on commodity hardware these days, but I don't get why everyone says systems like MongoDB or PostgreSQL can't handle millions of records. I literally just led a team to do that over the past few months on PostgreSQL, and it performs fine. Hell, we're not even using the columnar plugins that we should be using because GCP doesn't support them. Maybe there's something I don't know about, yet. We haven't used these systems to supply training data quite yet; they're more focused on analytics. I'm sure there's a good reason that I'll learn soon enough. I just don't want to pay for Snowflake or BigQuery, though I have heard that they can be cheap if you're smart about it.
 
 I'm nearly out of time for my current session. I'm hoping I'll have some time after dinner to actually write some damn code.
+
+I took a quick look at [LinkedIn's robots.txt](https://www.linkedin.com/robots.txt). This is funny:
+
+```robots.txt
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: Claude-User
+Disallow: /
+
+User-agent: Claude-SearchBot
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
+
+User-agent: GPTBot
+Disallow: /
+```
+
+That list goes on. And there's one critical one:
+
+```robots.txt
+User-agent: *
+Disallow: /
+```
+
+Also, I forgot that Microsoft owns LinkedIn. I just got sad again. Ends up that reading posts is via their Community Management API, which "are only available to registered legal organization for commercial use cases only." Lovely. I wonder if I should send a copy of this book to them, since it explicitly violates their `robots.txt`. In any case, I guess I can't used LinkedIn content, or at the very least, I don't want to go through the hassle it would take to ethically get access. I do find it funny that they wrote a LinkedIn crawler but don't have configurations to actually crawl it. So they encourage their readers to violate terms, but they don't do it themselves. Assholes. I'm deleting the crawler. I'm out of time to test if I broke some import, though. I'll check after dinner.
