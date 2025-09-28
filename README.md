@@ -18,6 +18,8 @@ I'll also probably reorganize things a great deal, as I have a specific way I li
 
 I will attempt to use Claude Code to help me with this, though my experience with it is limited. I did attempt to do some kind of agentic development for my Warhammer 40k character sheet project, but I wasn't happy with the results. I'll come back to that once the technology has progressed a little more.
 
+Beyond this, I'll store thoughts and decisions in [notes](notes.md).
+
 <hr>
 
 <div align="center">
