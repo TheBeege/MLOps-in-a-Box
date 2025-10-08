@@ -31,12 +31,14 @@ def fetch_all_data() -> dict[str, list[NoSQLBaseDocument]]:
             executor.submit(
                 __fetch_articles,
             ): "articles",
-            executor.submit(
-                __fetch_posts,
-            ): "posts",
-            executor.submit(
-                __fetch_repositories,
-            ): "repositories",
+            # Skip posts and repositories - collections don't exist in Qdrant yet
+            # TODO: fix
+            # executor.submit(
+            #     __fetch_posts,
+            # ): "posts",
+            # executor.submit(
+            #     __fetch_repositories,
+            # ): "repositories",
         }
 
         results = {}

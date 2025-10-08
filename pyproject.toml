@@ -19,6 +19,7 @@ dependencies = [
     "poethepoet==0.37.0",
     "datasets>=4.1.1,<5",
     "torch>=2.8.0,<3",
+    "requests>=2.32.0,<3",
     "selenium>=4.35.0,<5",
     "webdriver-manager>=4.0.2,<5",
     "beautifulsoup4>=4.13.5,<5",
