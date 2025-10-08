@@ -1,0 +1,15 @@
+settings:
+  docker:
+    parent_image: 992382797823.dkr.ecr.eu-central-1.amazonaws.com/zenml-rlwlcs:latest
+    skip_build: True
+  orchestrator.sagemaker:
+    synchronous: false
+    
+parameters:
+  user_full_name: Bryan Berry # [First Name(s)] [Last Name]
+  links:
+    # Personal Blog
+    - https://medium.com/djangogirlsseoul-codecamp/first-time-django-c55202d1b2ec
+    - https://medium.com/@bryanbeegeberry/why-i-hate-the-internet-in-korea-826d4e44d4a8
+    - https://medium.com/codeseoul/automating-infrastructure-with-docker-32f85cab37c4
+    - https://medium.com/@bryanbeegeberry/project-mlops-in-a-box-2025-09-28-c90800401a51
