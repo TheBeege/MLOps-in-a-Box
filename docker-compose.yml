@@ -14,7 +14,6 @@ services:
       - mongo_data:/data/db
     networks:
       - local
-    restart: always
 
   qdrant:
     image: qdrant/qdrant:latest
@@ -29,11 +28,50 @@ services:
       - qdrant_data:/qdrant/storage
     networks:
       - local
-    restart: always
+
+  zenml:
+    image: zenmldocker/zenml-server
+    container_name: "llm_engineering_zenml"
+    ports:
+    - name: HTTP
+      published: 8080
+      target: 8080
+    environment:
+      ZENML_STORE_URL: mysql://zenml:bezenmydude@zenmldb/zenml
+      ZENML_SERVER_AUTO_ACTIVATE: 1
+      ZENML_DEFAULT_USER_NAME: admin
+      ZENML_DEFAULT_USER_PASSWORD: zenml
+    networks:
+    - local
+    depends_on:
+      zenmldb:
+        condition: service_healthy
+  
+  zenmldb:
+    image: mysql
+    container_name: "llm_engineering_zenmldb"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: true
+      MYSQL_USER: zenml
+      MYSQL_PASSWORD: bezenmydude
+      MYSQL_DATABASE: zenml
+    volumes:
+    - type: volume
+      source: zenmldb_data
+      target: /var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+    - local
 
 volumes:
   mongo_data:
   qdrant_data:
+  zenmldb_data:
 
 networks:
   local:

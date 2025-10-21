@@ -10,7 +10,7 @@ requires-python = ">=3.13,<3.14"
 readme = "README.md"
 license = "MIT"
 dependencies = [
-    "zenml[server]==0.85.0",
+    "zenml[server]==0.90.0",
     "pymongo>=4.15.1,<5",
     "click>=8.2.1,<9",
     "loguru>=0.7.3,<0.8",
@@ -91,20 +91,11 @@ call-inference-ml-service = "curl -X POST 'http://127.0.0.1:8000/rag' -H 'Conten
 ## Local infrastructure
 local-docker-infrastructure-up = "docker compose up -d"
 local-docker-infrastructure-down = "docker compose stop"
-local-zenml-server-down = "uv run zenml logout --local"
-local-infrastructure-up = [
-    "local-docker-infrastructure-up",
-    "local-zenml-server-down",
-    "local-zenml-server-up",
+local-docker-infrastructure-delete-containers = "docker compose down"
+local-docker-infrastructure-delete = [
+    "local-docker-infrastructure-delete-containers",
+    "local-docker-infrastructure-delete-volumes"
 ]
-local-infrastructure-down = [
-    "local-docker-infrastructure-down",
-    "local-zenml-server-down",
-]
-set-local-stack = "uv run zenml stack set default"
-set-aws-stack = "uv run zenml stack set aws-stack"
-set-asynchronous-runs = "uv run zenml orchestrator update aws-stack --synchronous=False"
-zenml-server-disconnect = "uv run zenml disconnect"
 
 ## Settings
 export-settings-to-zenml = "uv run python -m tools.run --export-settings"
@@ -130,20 +121,8 @@ gitleaks-check = "docker run -v .:/src zricethezav/gitleaks:latest dir /src/llm_
 lint-fix = "uv run ruff check --fix ."
 format-fix = "uv run ruff format ."
 
-[tool.poe.tasks.local-zenml-server-up]
-control.expr = "sys.platform"
-
-[[tool.poe.tasks.local-zenml-server-up.switch]]
-case = "darwin"
-env = { OBJC_DISABLE_INITIALIZE_FORK_SAFETY = "YES" }
-cmd = "uv run zenml login --local"
-
-[[tool.poe.tasks.local-zenml-server-up.switch]]
-case = "win32"
-cmd = "uv run zenml login --local --blocking"
-
-[[tool.poe.tasks.local-zenml-server-up.switch]]
-cmd = "uv run zenml login --local"
+[tool.poe.tasks.local-docker-infrastructure-delete-volumes]
+shell = "docker volume ls -q --filter 'name=llm-engineers-handbook_*' | xargs docker volume rm"
 
 [tool.poe.tasks.test]
 cmd = "uv run pytest tests/"

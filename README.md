@@ -20,6 +20,45 @@ I will attempt to use Claude Code to help me with this, though my experience wit
 
 Beyond this, I'll store thoughts and decisions on [Medium](https://medium.com/@bryanbeegeberry/list/mlopsinabox-dd66bd992f55).
 
+## Setup
+
+Create a `.env` file, using `.env.example` as a template.
+
+## Running
+
+```shell
+docker compose up -d
+```
+
+### First Run
+
+After getting Docker things going, visit [`http://localhost:8080/`](http://localhost:8080/) and go through ZenML's onboarding process.
+
+Go to the project settings and generate an API token. Copy and paste that into your `.env`.
+
+TODO: Submit PR for creating workspaces and service accounts in ZenML Terraform provider.
+
+Next, set up the stack with Terraform:
+
+```shell
+terraform -chdir=terraform init
+scripts/tf.sh apply
+```
+
+Now, let's login with the ZenML CLI to set the correct stack. Later, I hope to automate this. ZenML seems to like making the user do stuff.
+
+```shell
+uv run zenml login http://localhost:8080
+```
+
+A browser will pop up. Do the thing. Default credentials based on **this configuration** are `admin` / `zenml`. If you're using WSL without some X11 configuration, please submit a PR when you figure out what needs to be done.
+
+Now, set the stack to our local stack:
+
+```shell
+uv run zenml stack set local-stack
+```
+
 <hr>
 
 <div align="center">

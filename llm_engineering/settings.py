@@ -1,4 +1,6 @@
+from typing import Optional, Self
 from loguru import logger
+from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from zenml.client import Client
 from zenml.exceptions import EntityExistsError
@@ -8,6 +10,10 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
     # --- Required settings even when working locally. ---
+
+    ZENML_SERVER_URL: str = "http://localhost:8080"
+    ZENML_API_TOKEN: Optional[str] = None
+    ZENML_API_KEY: Optional[str] = None
 
     # OpenAI API
     OPENAI_MODEL_ID: str = "gpt-4o-mini"
@@ -80,6 +86,12 @@ class Settings(BaseSettings):
         max_token_window = int(official_max_token_window * 0.90)
 
         return max_token_window
+
+    @model_validator(mode="after")
+    def zenml_api_secret_is_set(self) -> Self:
+        if self.ZENML_API_TOKEN is None and self.ZENML_API_KEY is None:
+            raise ValueError("One of ZENML_API_TOKEN or ZENML_API_KEY must be set")
+        return self
 
     @classmethod
     def load_settings(cls) -> "Settings":
