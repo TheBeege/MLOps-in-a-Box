@@ -6,7 +6,7 @@ authors = [
     { name = "iusztinpaul", email = "p.b.iusztin@gmail.com" },
     { name = "Bryan \"Beege\" Berry" }
 ]
-requires-python = ">=3.13,<3.14"
+requires-python = ">=3.11,<3.12"
 readme = "README.md"
 license = "MIT"
 dependencies = [
@@ -89,12 +89,18 @@ call-inference-ml-service = "curl -X POST 'http://127.0.0.1:8000/rag' -H 'Conten
 
 # Infrastructure
 ## Local infrastructure
+local-docker-parent-image-build = "docker buildx build --platform linux/amd64 -t localhost:5000/zenml-base:latest -t registry:5000/zenml-base:latest ."
+local-docker-parent-image-push = "docker push localhost:5000/zenml-base:latest"
 local-docker-infrastructure-up = "docker compose up -d"
 local-docker-infrastructure-down = "docker compose stop"
 local-docker-infrastructure-delete-containers = "docker compose down"
 local-docker-infrastructure-delete = [
     "local-docker-infrastructure-delete-containers",
     "local-docker-infrastructure-delete-volumes"
+]
+local-docker-parent-image-prepare = [
+    "local-docker-parent-image-build",
+    "local-docker-parent-image-push"
 ]
 
 ## Settings

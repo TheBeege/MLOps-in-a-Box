@@ -46,6 +46,8 @@ services:
     depends_on:
       zenmldb:
         condition: service_healthy
+      docker_registry:
+        condition: service_healthy
   
   zenmldb:
     image: mysql
@@ -68,11 +70,34 @@ services:
     networks:
     - local
 
+  docker_registry:
+    image: registry
+    container_name: "llm_engineering_docker_registry"
+    ports:
+    - name: HTTP
+      published: 5000
+      target: 5000
+    volumes:
+    - type: volume
+      source: registry_storage
+      target: /var/lib/registry
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5000"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    networks:
+    - local
+
+
 volumes:
   mongo_data:
   qdrant_data:
   zenmldb_data:
+  registry_storage:
 
 networks:
   local:
     driver: bridge
+    name: llmops-network

@@ -1,5 +1,5 @@
 data "zenml_stack_component" "artifact_store_local" {
-    name   = "artifacts_dir"
+    name   = "default"
     type   = "artifact_store"
 }
 
@@ -7,6 +7,12 @@ resource "zenml_stack_component" "orchestrator_local" {
     name   = "local_docker"
     type   = "orchestrator"
     flavor = "local_docker"
+
+    configuration = {
+      run_args = jsonencode({
+        network = "llmops-network"
+      })
+    }
 }
 
 resource "zenml_stack" "local" {

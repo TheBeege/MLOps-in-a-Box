@@ -1,0 +1,13 @@
+.venv
+.env
+.env.example
+docker-compose.yml
+output
+.vscode
+.github
+code_snippets
+__pycache__
+terraform
+scripts
+.git
+.gitignore
