@@ -12,6 +12,12 @@ class Settings(BaseSettings):
     # --- Required settings even when working locally. ---
 
     ZENML_SERVER_URL: str = "http://localhost:8080"
+    # Not 100% sure the below is needed. May remove when more confident.
+    # In any case, don't store real database credentials in code, kids.
+    ZENML_STORE_URL: str = "mysql://zenml:bezenmydude@zenmldb/zenml"
+    # Previously, we validated that one of the below must be populated.
+    # However, these settings are used within a pipeline run, which does
+    # not require either of these values to be set.
     ZENML_API_TOKEN: Optional[str] = None
     ZENML_API_KEY: Optional[str] = None
 
@@ -30,7 +36,7 @@ class Settings(BaseSettings):
     # --- Otherwise, default values values work fine. ---
 
     # MongoDB database
-    DATABASE_HOST: str = "mongodb://llm_engineering:llm_engineering@127.0.0.1:27017"
+    DATABASE_HOST: str = "mongodb://llm_engineering:llm_engineering@mongo:27017"
     DATABASE_NAME: str = "twin"
 
     # Qdrant vector database
@@ -86,12 +92,6 @@ class Settings(BaseSettings):
         max_token_window = int(official_max_token_window * 0.90)
 
         return max_token_window
-
-    @model_validator(mode="after")
-    def zenml_api_secret_is_set(self) -> Self:
-        if self.ZENML_API_TOKEN is None and self.ZENML_API_KEY is None:
-            raise ValueError("One of ZENML_API_TOKEN or ZENML_API_KEY must be set")
-        return self
 
     @classmethod
     def load_settings(cls) -> "Settings":

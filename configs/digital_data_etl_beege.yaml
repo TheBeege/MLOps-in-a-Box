@@ -2,11 +2,12 @@ settings:
   docker:
     parent_image: localhost:5000/zenml-base:latest
     dockerignore: .dockerignore
-    environment:
-      ZENML_STORE_URL: mysql://zenml:bezenmydude@zenmldb/zenml
   orchestrator.sagemaker:
     synchronous: false
-    
+  
+environment:
+  ZENML_STORE_URL: http://zenml:8080
+
 parameters:
   user_full_name: Bryan Berry # [First Name(s)] [Last Name]
   links:

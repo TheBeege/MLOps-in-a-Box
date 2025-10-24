@@ -29,6 +29,9 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     uv sync --locked --no-install-project --link-mode=copy --compile-bytecode
 
+# Make cache dir to avoid huggingface.transformers permissions issue
+RUN mkdir /.cache && chown 1000:1000 /.cache
+
 ENV PYTHONPATH=/app/.venv/lib/python3.11/site-packages
 
 # Copy the rest of the code.
