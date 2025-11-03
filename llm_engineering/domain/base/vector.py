@@ -3,12 +3,14 @@ from abc import ABC
 from typing import Any, Callable, Dict, Generic, Type, TypeVar
 from uuid import UUID
 
+from grpc import StatusCode
 import numpy as np
 from loguru import logger
 from pydantic import UUID4, BaseModel, Field
 from qdrant_client.http import exceptions
 from qdrant_client.http.models import Distance, VectorParams
 from qdrant_client.models import CollectionInfo, PointStruct, Record
+from grpc._channel import _InactiveRpcError
 
 from llm_engineering.application.networks.embeddings import EmbeddingModelSingleton
 from llm_engineering.domain.exceptions import ImproperlyConfigured
@@ -80,7 +82,11 @@ class VectorBaseDocument(BaseModel, Generic[T], ABC):
     def bulk_insert(cls: Type[T], documents: list["VectorBaseDocument"]) -> bool:
         try:
             cls._bulk_insert(documents)
-        except exceptions.UnexpectedResponse:
+        except _InactiveRpcError as exc:
+            if exc.code() != StatusCode.NOT_FOUND:
+                logger.exception(f"Failed to insert documents in '{cls.get_collection_name()}'.")
+                return False
+            
             logger.info(
                 f"Collection '{cls.get_collection_name()}' does not exist. Trying to create the collection and reinsert the documents."
             )
@@ -90,10 +96,12 @@ class VectorBaseDocument(BaseModel, Generic[T], ABC):
             try:
                 cls._bulk_insert(documents)
             except exceptions.UnexpectedResponse:
-                logger.error(f"Failed to insert documents in '{cls.get_collection_name()}'.")
+                logger.exception(f"Failed to insert documents in '{cls.get_collection_name()}'.")
 
                 return False
-
+        except exceptions.UnexpectedResponse:
+            logger.exception(f"Failed to insert documents in '{cls.get_collection_name()}'.")
+        
         return True
 
     @classmethod

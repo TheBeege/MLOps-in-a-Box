@@ -2,16 +2,15 @@ settings:
   docker:
     parent_image: localhost:5000/zenml-base:latest
     skip_build: true
-  orchestrator.sagemaker:
-    synchronous: false
   
 environment:
   ZENML_STORE_URL: http://zenml:8080
 
 parameters:
   finetuning_type: sft
+  model_name: DeepSeek-R1-0528-Qwen3-8B
   num_train_epochs: 3
   per_device_train_batch_size: 2
   learning_rate: 3e-4
   dataset_huggingface_workspace: TheBeege
-  is_dummy: true # Change this to 'false' to run the training with the full dataset and epochs.
+  is_dummy: false # Change this to 'false' to run the training with the full dataset and epochs.

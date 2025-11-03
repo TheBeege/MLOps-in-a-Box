@@ -43,6 +43,7 @@ class Settings(BaseSettings):
     USE_QDRANT_CLOUD: bool = False
     QDRANT_DATABASE_HOST: str = "localhost"
     QDRANT_DATABASE_PORT: int = 6333
+    QDRANT_DATABASE_GRPC_PORT: int = 6334
     QDRANT_CLOUD_URL: str = "str"
     QDRANT_APIKEY: str | None = None
 

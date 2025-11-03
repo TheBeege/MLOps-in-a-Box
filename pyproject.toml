@@ -34,6 +34,7 @@ dependencies = [
     "fastapi>=0.115.8,<=0.130",
     "uvicorn>=0.37.0,<0.38",
     "opik>=1.8.57,<2",
+    "unsloth==2025.10.12",
 ]
 
 [dependency-groups]
@@ -76,6 +77,7 @@ run-import-data-warehouse-from-json = "python -m tools.data_warehouse --import-r
 
 # Training pipelines
 run-training-pipeline = "python -m tools.run --no-cache --run-training"
+run-local-training-pipeline = "python -m tools.run --no-cache --run-local-training"
 run-evaluation-pipeline = "python -m tools.run --no-cache --run-evaluation"
 
 # Inference

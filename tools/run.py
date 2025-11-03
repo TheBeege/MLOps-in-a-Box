@@ -5,15 +5,6 @@ import click
 from loguru import logger
 
 from llm_engineering import settings
-from pipelines import (
-    digital_data_etl,
-    end_to_end_data,
-    evaluating,
-    export_artifact_to_json,
-    feature_engineering,
-    generate_datasets,
-    training,
-)
 
 
 @click.command(
@@ -93,6 +84,12 @@ Examples:
     help="Whether to run the preference dataset generation pipeline.",
 )
 @click.option(
+    "--run-local-training",
+    is_flag=True,
+    default=False,
+    help="Whether to run the training pipeline in local mode.",
+)
+@click.option(
     "--run-training",
     is_flag=True,
     default=False,
@@ -120,6 +117,7 @@ def main(
     run_generate_instruct_datasets: bool = False,
     run_generate_preference_datasets: bool = False,
     run_training: bool = False,
+    run_local_training: bool = False,
     run_evaluation: bool = False,
     export_settings: bool = False,
 ) -> None:
@@ -131,6 +129,7 @@ def main(
         or run_generate_instruct_datasets
         or run_generate_preference_datasets
         or run_training
+        or run_local_training
         or run_evaluation
         or export_settings
     ), "Please specify an action to run."
@@ -145,6 +144,7 @@ def main(
     root_dir = Path(__file__).resolve().parent.parent
 
     if run_end_to_end_data:
+        from pipelines import end_to_end_data
         run_args_end_to_end = {}
         pipeline_args["config_path"] = root_dir / "configs" / "end_to_end_data.yaml"
         assert pipeline_args["config_path"].exists(), f"Config file not found: {pipeline_args['config_path']}"
@@ -152,6 +152,7 @@ def main(
         end_to_end_data.with_options(**pipeline_args)(**run_args_end_to_end)
 
     if run_etl:
+        from pipelines import digital_data_etl
         run_args_etl = {}
         pipeline_args["config_path"] = root_dir / "configs" / etl_config_filename
         assert pipeline_args["config_path"].exists(), f"Config file not found: {pipeline_args['config_path']}"
@@ -159,6 +160,7 @@ def main(
         digital_data_etl.with_options(**pipeline_args)(**run_args_etl)
 
     if run_export_artifact_to_json:
+        from pipelines import export_artifact_to_json
         run_args_etl = {}
         pipeline_args["config_path"] = root_dir / "configs" / "export_artifact_to_json.yaml"
         assert pipeline_args["config_path"].exists(), f"Config file not found: {pipeline_args['config_path']}"
@@ -166,30 +168,42 @@ def main(
         export_artifact_to_json.with_options(**pipeline_args)(**run_args_etl)
 
     if run_feature_engineering:
+        from pipelines import feature_engineering
         run_args_fe = {}
         pipeline_args["config_path"] = root_dir / "configs" / "feature_engineering.yaml"
         pipeline_args["run_name"] = f"feature_engineering_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"
         feature_engineering.with_options(**pipeline_args)(**run_args_fe)
 
     if run_generate_instruct_datasets:
+        from pipelines import generate_datasets
         run_args_cd = {}
         pipeline_args["config_path"] = root_dir / "configs" / "generate_instruct_datasets.yaml"
         pipeline_args["run_name"] = f"generate_instruct_datasets_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"
         generate_datasets.with_options(**pipeline_args)(**run_args_cd)
 
     if run_generate_preference_datasets:
+        from pipelines import generate_datasets
         run_args_cd = {}
         pipeline_args["config_path"] = root_dir / "configs" / "generate_preference_datasets.yaml"
         pipeline_args["run_name"] = f"generate_preference_datasets_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"
         generate_datasets.with_options(**pipeline_args)(**run_args_cd)
 
+    if run_local_training:
+        from pipelines import training_local
+        run_args_cd = {}
+        pipeline_args["config_path"] = root_dir / "configs" / "training.yaml"
+        pipeline_args["run_name"] = f"local_training_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"
+        training_local.with_options(**pipeline_args)(**run_args_cd)
+
     if run_training:
+        from pipelines import training
         run_args_cd = {}
         pipeline_args["config_path"] = root_dir / "configs" / "training.yaml"
         pipeline_args["run_name"] = f"training_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"
         training.with_options(**pipeline_args)(**run_args_cd)
 
     if run_evaluation:
+        from pipelines import evaluating
         run_args_cd = {}
         pipeline_args["config_path"] = root_dir / "configs" / "evaluating.yaml"
         pipeline_args["run_name"] = f"evaluation_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"

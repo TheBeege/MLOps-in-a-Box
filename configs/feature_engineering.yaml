@@ -1,9 +1,13 @@
 settings:
   docker:
-    parent_image: 992382797823.dkr.ecr.eu-central-1.amazonaws.com/zenml-rlwlcs:latest
-    skip_build: True
+    parent_image: localhost:5000/zenml-base:latest
+    skip_build: true
   orchestrator.sagemaker:
     synchronous: false
+  
+environment:
+  ZENML_STORE_URL: http://zenml:8080
+  QDRANT_DATABASE_HOST: qdrant
     
 parameters:
   author_full_names:

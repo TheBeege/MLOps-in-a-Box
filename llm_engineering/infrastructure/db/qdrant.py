@@ -18,6 +18,13 @@ class QdrantDatabaseConnector:
                     )
 
                     uri = settings.QDRANT_CLOUD_URL
+                elif settings.QDRANT_DATABASE_GRPC_PORT is not None:
+                    cls._instance = QdrantClient(
+                        host=settings.QDRANT_DATABASE_HOST,
+                        grpc_port=settings.QDRANT_DATABASE_GRPC_PORT,
+                        prefer_grpc=True,
+                    )
+                    uri = f"{settings.QDRANT_DATABASE_HOST}:{settings.QDRANT_DATABASE_GRPC_PORT}"
                 else:
                     cls._instance = QdrantClient(
                         host=settings.QDRANT_DATABASE_HOST,

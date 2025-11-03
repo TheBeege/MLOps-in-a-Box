@@ -2,10 +2,6 @@ import argparse
 import os
 from pathlib import Path
 
-from unsloth import PatchDPOTrainer
-
-PatchDPOTrainer()
-
 from typing import Any, List, Literal, Optional  # noqa: E402
 
 import torch  # noqa
@@ -14,8 +10,6 @@ from huggingface_hub import HfApi  # noqa: E402
 from huggingface_hub.utils import RepositoryNotFoundError  # noqa: E402
 from transformers import TextStreamer, TrainingArguments  # noqa: E402
 from trl import DPOConfig, DPOTrainer, SFTTrainer  # noqa: E402
-from unsloth import FastLanguageModel, is_bfloat16_supported  # noqa: E402
-from unsloth.chat_templates import get_chat_template  # noqa: E402
 
 alpaca_template = """Below is an instruction that describes a task. Write a response that appropriately completes the request.
 
@@ -36,6 +30,8 @@ def load_model(
     target_modules: List[str],
     chat_template: str,
 ) -> tuple:
+    from unsloth import FastLanguageModel  # noqa: E402
+    from unsloth.chat_templates import get_chat_template  # noqa: E402
     model, tokenizer = FastLanguageModel.from_pretrained(
         model_name=model_name,
         max_seq_length=max_seq_length,
@@ -77,6 +73,8 @@ def finetune(
     beta: float = 0.5,  # Only for DPO
     is_dummy: bool = True,
 ) -> tuple:
+    from unsloth import is_bfloat16_supported
+
     model, tokenizer = load_model(
         model_name, max_seq_length, load_in_4bit, lora_rank, lora_alpha, lora_dropout, target_modules, chat_template
     )
@@ -142,6 +140,7 @@ def finetune(
             ),
         )
     elif finetuning_type == "dpo":
+        from unsloth import PatchDPOTrainer
         PatchDPOTrainer()
 
         def format_samples_dpo(example):
@@ -207,6 +206,7 @@ def inference(
     prompt: str = "Write a paragraph to introduce supervised fine-tuning.",
     max_new_tokens: int = 256,
 ) -> None:
+    from unsloth import FastLanguageModel   # noqa: E402
     model = FastLanguageModel.for_inference(model)
     message = alpaca_template.format(prompt, "")
     inputs = tokenizer([message], return_tensors="pt").to("cuda")
