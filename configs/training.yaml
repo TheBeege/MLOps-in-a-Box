@@ -1,7 +1,4 @@
 settings:
-  docker:
-    parent_image: localhost:5000/zenml-base:latest
-    skip_build: true
   orchestrator.sagemaker:
     synchronous: false
   

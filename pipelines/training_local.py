@@ -4,7 +4,7 @@ from steps import training as training_steps
 
 
 @pipeline
-def training(
+def training_local(
     finetuning_type: str = "sft",
     model_name: str = "DeepSeek-R1-0528-Qwen3-8B",
     num_train_epochs: int = 3,

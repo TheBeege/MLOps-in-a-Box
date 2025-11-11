@@ -1,5 +1,7 @@
 from datetime import datetime as dt
 from pathlib import Path
+import pkgutil
+import sys
 
 import click
 from loguru import logger
@@ -191,7 +193,7 @@ def main(
     if run_local_training:
         from pipelines import training_local
         run_args_cd = {}
-        pipeline_args["config_path"] = root_dir / "configs" / "training.yaml"
+        pipeline_args["config_path"] = root_dir / "configs" / "training_local.yaml"
         pipeline_args["run_name"] = f"local_training_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"
         training_local.with_options(**pipeline_args)(**run_args_cd)
 
